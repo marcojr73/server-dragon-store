@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id              Int           @id @default(autoincrement())
+  userName        String
+  email           String        @unique
+  coins           Int           @default(0)
+  gas             Int           @default(0)
+  picture         String?
+  googleId        String?
+  microsoftId     String?
+  createdAt       DateTime      @default(now())
+  organizationId  Int
+  organization    organizations @relation(fields: [organizationId], references: [id])
+  userHistory     exchanges[]   @relation("UserExchange")
+  employeeHistory exchanges[]   @relation("EmployeeExhange")
+  userSquads      userSquads[]
+}
+
+model squads {
+  id             Int           @id @default(autoincrement())
+  name           String
+  description    String?
+  color          String?
+  logo           String?
+  createdAt      DateTime      @default(now())
+  organizationId Int
+  organization   organizations @relation(fields: [organizationId], references: [id])
+  squadUsers     userSquads[]
+  squadScores    squadScores[]
+}
+
+model userSquads {
+  id       Int      @id @default(autoincrement())
+  userId   Int
+  squadId  Int
+  joinedAt DateTime @default(now())
+  user     users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  squad    squads   @relation(fields: [squadId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, squadId])
+}
+
+model squadScores {
+  id             Int      @id @default(autoincrement())
+  organizationId Int
+  squadId        Int
+  score          Int      @default(0)
+  createdAt      DateTime @default(now())
+
+  squad         squads        @relation(fields: [squadId], references: [id], onDelete: Cascade)
+  organizations organizations @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+}
+
+model organizations {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+
+  users   users[]
+  history history[]
+
+  store       store[]
+  squads      squads[]
+  squadScores squadScores[]
+}
+
+model history {
+  id             Int      @id @default(autoincrement())
+  organizationId Int
+  exchangeId     Int
+  createdAt      DateTime @default(now())
+
+  organization organizations @relation(fields: [organizationId], references: [id])
+  exchange     exchanges     @relation(fields: [exchangeId], references: [id])
+}
+
+model exchanges {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  employeeId Int
+  value      Int
+  message    String?
+  createdAt  DateTime @default(now())
+
+  user     users @relation("UserExchange", fields: [userId], references: [id])
+  employee users @relation("EmployeeExhange", fields: [employeeId], references: [id])
+
+  history history[]
+}
+
+model products {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  value       Int
+  picture     String?
+  storeId     Int
+  createdAt   DateTime @default(now())
+
+  store store @relation(fields: [storeId], references: [id])
+}
+
+model store {
+  id             Int      @id @default(autoincrement())
+  name           String
+  organizationId Int
+  createdAt      DateTime @default(now())
+
+  organization organizations @relation(fields: [organizationId], references: [id])
+
+  products products[]
+}
