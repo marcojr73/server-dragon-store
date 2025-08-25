@@ -4,6 +4,7 @@ import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { ConfigService } from '@nestjs/config';
 import { UserRepository } from '../../user-module/user-repository';
 import { OrganizationRepository } from '../../organization-module/organization-repository';
+import { AuthService } from '../services/auth-service';
 
 interface GoogleProfile {
   id: string;
@@ -18,22 +19,13 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     private configService: ConfigService,
     private userRepository: UserRepository,
     private organizationRepository: OrganizationRepository,
+    private authService: AuthService,
   ) {
     console.log('🔧 Configurando Google Strategy...');
 
     const clientID = configService.get<string>('GOOGLE_CLIENT_ID');
     const clientSecret = configService.get<string>('GOOGLE_CLIENT_SECRET');
     const host = configService.get<string>('HOST');
-
-    // ✅ Debug das configurações
-    console.log('📋 Configurações:');
-    console.log(
-      '   Client ID:',
-      clientID ? `${clientID.substring(0, 20)}...` : 'AUSENTE',
-    );
-    console.log('   Client Secret:', clientSecret);
-    console.log('   Host:', host);
-    console.log('   Callback URL:', `${host}/auth/google/callback`);
 
     if (!clientID || clientID === 'clientid') {
       throw new Error(
@@ -88,6 +80,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
           userName: profile.displayName,
           email: profile.emails[0].value,
           picture: profile.photos[0].value,
+          password: await this.authService.generateEncryptedPassword(),
           organizationId: organization.id,
           googleId: profile.id,
           microsoftId: null,

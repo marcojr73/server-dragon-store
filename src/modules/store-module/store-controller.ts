@@ -7,7 +7,7 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth-module/jwt-guard';
+import { JwtAuthGuard } from '../auth-module/guards/jwt-guard';
 import type { Request, Response } from 'express';
 import { User } from '../auth-module/annotations/user-annotation';
 import type { TUser } from '../user-module/interfaces';

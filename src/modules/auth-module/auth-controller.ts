@@ -1,7 +1,8 @@
-import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import type { Request, Response } from 'express';
-import { AuthService } from './auth-service';
+import { AuthService } from './services/auth-service';
+import { AuthBackofficeUserUseCase } from './use-cases/auth-backoffice-user-use-case';
 
 interface AuthenticatedRequest extends Request {
   user: any;
@@ -9,7 +10,10 @@ interface AuthenticatedRequest extends Request {
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private authBackofficeUserUseCase: AuthBackofficeUserUseCase,
+  ) {}
 
   @Get('/')
   helloAuth(@Req() request: Request, @Res() response: Response) {
@@ -43,5 +47,16 @@ export class AuthController {
   microsoftCallback(@Req() req: AuthenticatedRequest, @Res() res: Response) {
     const accessToken = this.authService.generateAccessToken(req.user);
     return this.authService.redirectWithAccessToken(res, accessToken);
+  }
+
+  @Post('/sign-in/organization')
+  async organization(@Req() req: Request, @Res() res: Response) {
+    const body = req.body;
+
+    const accessToken = await this.authBackofficeUserUseCase.execute(body);
+
+    return res.status(200).send({
+      accessToken,
+    });
   }
 }

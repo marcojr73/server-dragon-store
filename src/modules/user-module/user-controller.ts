@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user-service';
 import type { Request, Response } from 'express';
-import { JwtAuthGuard } from '../auth-module/jwt-guard';
+import { JwtAuthGuard } from '../auth-module/guards/jwt-guard';
 import { User } from '../auth-module/annotations/user-annotation';
 import type { TUser } from './interfaces';
 import { UserRepository } from './user-repository';

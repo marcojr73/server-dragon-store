@@ -4,7 +4,7 @@ import { User } from '../auth-module/annotations/user-annotation';
 import type { TUser } from '../user-module/interfaces';
 import { UserRepository } from '../user-module/user-repository';
 import { ExchangeUseCase } from './exchange-use-case';
-import { JwtAuthGuard } from '../auth-module/jwt-guard';
+import { JwtAuthGuard } from '../auth-module/guards/jwt-guard';
 
 @Controller('exchange')
 export class ExchangeController {

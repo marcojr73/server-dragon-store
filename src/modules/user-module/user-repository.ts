@@ -32,6 +32,7 @@ export class UserRepository {
         picture: true,
         coins: true,
         gas: true,
+        isAdmin: true,
         userSquads: {
           select: {
             squad: {
@@ -43,6 +44,24 @@ export class UserRepository {
           select: {
             id: true,
             name: true,
+          },
+        },
+      },
+    });
+  }
+
+  getAuthUser(data: Partial<users>) {
+    return this.prisma.users.findFirst({
+      where: data,
+      select: {
+        id: true,
+        userName: true,
+        email: true,
+        isAdmin: true,
+        password: true,
+        organization: {
+          select: {
+            id: true,
           },
         },
       },
@@ -81,7 +100,7 @@ export class UserRepository {
     });
   }
 
-  create(data: Omit<users, 'id' | 'coins' | 'gas' | 'createdAt'>) {
+  create(data: Omit<users, 'id' | 'coins' | 'gas' | 'createdAt' | 'isAdmin'>) {
     return this.prisma.users.create({
       data,
     });

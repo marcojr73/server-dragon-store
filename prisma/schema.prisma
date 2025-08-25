@@ -14,10 +14,12 @@ model users {
   coins           Int           @default(0)
   gas             Int           @default(0)
   picture         String?
+  password        String
   googleId        String?
   microsoftId     String?
   createdAt       DateTime      @default(now())
   organizationId  Int
+  isAdmin         Boolean       @default(false)
   organization    organizations @relation(fields: [organizationId], references: [id])
   userHistory     exchanges[]   @relation("UserExchange")
   employeeHistory exchanges[]   @relation("EmployeeExhange")

@@ -4,8 +4,8 @@ import { Strategy, VerifyCallback } from 'passport-microsoft';
 import { ConfigService } from '@nestjs/config';
 import { UserRepository } from '../../user-module/user-repository';
 import { OrganizationRepository } from '../../organization-module/organization-repository';
+import { AuthService } from '../services/auth-service';
 
-// Interfaces para tipagem do perfil Microsoft
 interface MicrosoftEmail {
   value: string;
   type?: string;
@@ -43,21 +43,11 @@ export class MicrosoftStrategy extends PassportStrategy(Strategy, 'microsoft') {
     private configService: ConfigService,
     private userRepository: UserRepository,
     private organizationRepository: OrganizationRepository,
+    private authService: AuthService,
   ) {
-    console.log('🔧 Configurando Microsoft Strategy...');
-
     const clientID = configService.get<string>('MICROSOFT_CLIENT_ID');
     const clientSecret = configService.get<string>('MICROSOFT_CLIENT_SECRET');
     const host = configService.get<string>('HOST');
-
-    console.log('📋 Configurações:');
-    console.log(
-      '   Client ID:',
-      clientID ? `${clientID.substring(0, 20)}...` : 'AUSENTE',
-    );
-    console.log('   Client Secret:', clientSecret ? '***' : 'AUSENTE');
-    console.log('   Host:', host);
-    console.log('   Callback URL:', `${host}/auth/microsoft/callback`);
 
     if (!clientID || clientID === 'clientid') {
       throw new Error(
@@ -134,6 +124,7 @@ export class MicrosoftStrategy extends PassportStrategy(Strategy, 'microsoft') {
           userName: typedProfile.displayName,
           email: typedProfile.emails[0].value,
           picture: typedProfile.picture || null,
+          password: await this.authService.generateEncryptedPassword(),
           organizationId: organization.id,
           googleId: null,
           microsoftId: typedProfile.id,

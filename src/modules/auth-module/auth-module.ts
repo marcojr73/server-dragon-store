@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth-controller';
 import { PassportModule } from '@nestjs/passport';
-import { AuthService } from './auth-service';
+import { AuthService } from './services/auth-service';
 import { JwtModule } from '@nestjs/jwt';
 import { GoogleStrategy } from './strategies/google-strategy';
 import { UserModule } from '../user-module/user-module';
@@ -9,6 +9,7 @@ import { OrganizationModule } from '../organization-module/organization-module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MicrosoftStrategy } from './strategies/microsoft-strategy';
 import { JwtStrategy } from './strategies/jwt-strategy';
+import { AuthBackofficeUserUseCase } from './use-cases/auth-backoffice-user-use-case';
 
 @Module({
   imports: [
@@ -25,7 +26,13 @@ import { JwtStrategy } from './strategies/jwt-strategy';
     OrganizationModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, GoogleStrategy, MicrosoftStrategy, JwtStrategy],
+  providers: [
+    AuthService,
+    GoogleStrategy,
+    MicrosoftStrategy,
+    JwtStrategy,
+    AuthBackofficeUserUseCase,
+  ],
   exports: [JwtModule],
 })
 export class AuthModule {}
