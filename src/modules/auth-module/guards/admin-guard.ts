@@ -5,30 +5,25 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
+import { UserRepository } from '../../user-module/user-repository';
 
 @Injectable()
 export class AdminGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(private userRepository: UserRepository) {}
 
-  canActivate(context: ExecutionContext): boolean {
-    const requireAdmin = this.reflector.get<boolean>(
-      'requireAdmin',
-      context.getHandler(),
-    );
-
-    if (!requireAdmin) {
-      return true;
-    }
-
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const user = request.user;
+    const userToken = request.user;
+
+    const user = await this.userRepository.getAuthUser({
+      email: userToken.email,
+    });
 
     if (!user) {
       throw new UnauthorizedException();
     }
 
-    if (!user.is_admin) {
+    if (!user.isAdmin) {
       throw new ForbiddenException();
     }
 

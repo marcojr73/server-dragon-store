@@ -111,9 +111,9 @@ export class MicrosoftStrategy extends PassportStrategy(Strategy, 'microsoft') {
       } else {
         console.log('🆕 Criando novo usuário');
 
-        const organization = await this.organizationRepository.findOrganization(
-          { id: 1 },
-        );
+        const organization = await this.organizationRepository.findFirst({
+          id: 1,
+        });
 
         if (!organization) {
           console.error('❌ Organização não encontrada');

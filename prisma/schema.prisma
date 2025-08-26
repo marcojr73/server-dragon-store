@@ -62,9 +62,12 @@ model squadScores {
 }
 
 model organizations {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
+  id           Int      @id @default(autoincrement())
+  name         String
+  color        String   @default("#2ec7d6")
+  logo         String   @default("https://cdn.prod.website-files.com/67ebdcb55fb853aeb815e297/6807d1d69d08fad7a55568c1_Webclip.png")
+  contactEmail String?
+  createdAt    DateTime @default(now())
 
   users   users[]
   history history[]
