@@ -100,26 +100,76 @@ export class UserRepository {
     });
   }
 
-  create(data: Omit<users, 'id' | 'coins' | 'gas' | 'createdAt' | 'isAdmin'>) {
+  create(data: Omit<users, 'id' | 'createdAt'>) {
     return this.prisma.users.create({
       data,
     });
   }
 
+  delete(userId: number) {
+    return this.prisma.users.delete({
+      where: {
+        id: userId,
+      },
+    });
+  }
+
   update(
-    { gas, coins, organizationId, userName, picture, email }: Partial<users>,
+    {
+      gas,
+      coins,
+      organizationId,
+      userName,
+      isAdmin,
+      picture,
+      email,
+      password,
+    }: Partial<users>,
     userId: number,
   ) {
     return this.prisma.users.update({
       data: {
         coins,
         gas,
+        isAdmin,
         organizationId,
+        password,
         userName,
         picture,
         email,
       },
       where: { id: userId },
+    });
+  }
+
+  getUsersByOrganizationId(organizationId: number, search: string) {
+    return this.prisma.users.findMany({
+      where: {
+        organizationId: organizationId,
+        userName: {
+          contains: search,
+          mode: 'insensitive',
+        },
+      },
+      select: {
+        id: true,
+        userName: true,
+        picture: true,
+        email: true,
+        coins: true,
+        gas: true,
+        isAdmin: true,
+        organization: {
+          select: {
+            id: true,
+            name: true,
+            logo: true,
+          },
+        },
+      },
+      orderBy: {
+        userName: 'asc',
+      },
     });
   }
 }

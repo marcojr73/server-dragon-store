@@ -5,6 +5,17 @@ import { PrismaService } from '../prisma-module/prisma-service';
 export class StoreRepository {
   constructor(private prisma: PrismaService) {}
 
+  findByOrganizationIdOrFail(organizationId: number) {
+    return this.prisma.store.findFirstOrThrow({
+      where: {
+        organizationId,
+      },
+      select: {
+        id: true,
+      },
+    });
+  }
+
   listProductsOfStoreByOrganizationId(organizationId: number) {
     return this.prisma.store.findFirst({
       where: {
@@ -19,26 +30,6 @@ export class StoreRepository {
             description: true,
             value: true,
             picture: true,
-          },
-        },
-      },
-    });
-  }
-
-  getProductById(id: number) {
-    return this.prisma.products.findFirst({
-      where: {
-        id,
-      },
-      select: {
-        id: true,
-        name: true,
-        value: true,
-        picture: true,
-        store: {
-          select: {
-            id: true,
-            name: true,
           },
         },
       },

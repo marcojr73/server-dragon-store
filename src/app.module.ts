@@ -7,9 +7,10 @@ import { PrismaModule } from './modules/prisma-module/prisma-module';
 import { UserModule } from './modules/user-module/user-module';
 import { OrganizationModule } from './modules/organization-module/organization-module';
 import { HistoryModule } from './modules/history-module/history-module';
-import { StoreModule } from './modules/store-module/squad-module';
 import { SquadModule } from './modules/squad-module/squad-module';
 import { ExchangeModule } from './modules/exchange-module/exchange-module';
+import { StoreModule } from './modules/store-module/store-module';
+import { ProductsModule } from './modules/products-module/products-module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ExchangeModule } from './modules/exchange-module/exchange-module';
     OrganizationModule,
     HistoryModule,
     StoreModule,
+    ProductsModule,
     SquadModule,
     ExchangeModule,
   ],

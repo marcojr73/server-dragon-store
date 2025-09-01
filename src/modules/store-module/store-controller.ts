@@ -14,6 +14,7 @@ import type { TUser } from '../user-module/interfaces';
 import { UserRepository } from '../user-module/user-repository';
 import { StoreRepository } from './store-repository';
 import { StoreUseCase } from './store-use-case';
+import { ProductsRepository } from '../products-module/products-repository';
 
 @Controller('store')
 export class StoreController {
@@ -25,7 +26,7 @@ export class StoreController {
 
   @Get('/')
   @UseGuards(JwtAuthGuard)
-  async squad(
+  async list(
     @Req() req: Request,
     @Res() res: Response,
     @User() ReqUser: TUser,

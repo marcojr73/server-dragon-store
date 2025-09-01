@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { AuthController } from './auth-controller';
 import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './services/auth-service';
@@ -22,7 +22,7 @@ import { AuthBackofficeUserUseCase } from './use-cases/auth-backoffice-user-use-
       }),
       inject: [ConfigService],
     }),
-    UserModule,
+    forwardRef(() => UserModule),
     OrganizationModule,
   ],
   controllers: [AuthController],
@@ -33,6 +33,6 @@ import { AuthBackofficeUserUseCase } from './use-cases/auth-backoffice-user-use-
     JwtStrategy,
     AuthBackofficeUserUseCase,
   ],
-  exports: [JwtModule],
+  exports: [JwtModule, AuthService],
 })
 export class AuthModule {}

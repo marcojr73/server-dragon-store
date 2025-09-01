@@ -124,10 +124,13 @@ export class MicrosoftStrategy extends PassportStrategy(Strategy, 'microsoft') {
           userName: typedProfile.displayName,
           email: typedProfile.emails[0].value,
           picture: typedProfile.picture || null,
-          password: await this.authService.generateEncryptedPassword(),
+          password: await AuthService.generateEncryptedPassword(),
           organizationId: organization.id,
           googleId: null,
           microsoftId: typedProfile.id,
+          isAdmin: false,
+          coins: 0,
+          gas: 0,
         });
 
         console.log('✅ Novo usuário criado:', newUser.id);

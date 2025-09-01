@@ -31,15 +31,14 @@ export class AuthService {
     res.redirect(redirectUrl);
   }
 
-  async generateEncryptedPassword(
+  static async generateEncryptedPassword(
     plainPassword = this.generatePassword(),
   ): Promise<string> {
-    console.log(plainPassword);
     const saltRounds = 10;
     return await bcrypt.hash(plainPassword, saltRounds);
   }
 
-  generatePassword(length: number = 8): string {
+  static generatePassword(length: number = 8): string {
     const caracteres =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
     let password = '';

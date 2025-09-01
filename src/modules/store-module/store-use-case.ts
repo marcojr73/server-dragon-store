@@ -6,12 +6,14 @@ import {
 } from '@nestjs/common';
 import { UserRepository } from '../user-module/user-repository';
 import { StoreRepository } from './store-repository';
+import { ProductsRepository } from '../products-module/products-repository';
 
 @Injectable()
 export class StoreUseCase {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly storeRepository: StoreRepository,
+    private readonly productsRepository: ProductsRepository,
   ) {}
 
   async rescue(userId: number, productId: number) {
@@ -22,7 +24,7 @@ export class StoreUseCase {
     if (!user) {
       throw new UnauthorizedException();
     }
-    const product = await this.storeRepository.getProductById(productId);
+    const product = await this.productsRepository.getProductById(productId);
     if (!product) {
       throw new NotFoundException();
     }

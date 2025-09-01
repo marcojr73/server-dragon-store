@@ -80,10 +80,13 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
           userName: profile.displayName,
           email: profile.emails[0].value,
           picture: profile.photos[0].value,
-          password: await this.authService.generateEncryptedPassword(),
+          password: await AuthService.generateEncryptedPassword(),
           organizationId: organization.id,
           googleId: profile.id,
           microsoftId: null,
+          isAdmin: false,
+          coins: 0,
+          gas: 0,
         });
 
         console.log('✅ Novo usuário criado:', newUser.id);

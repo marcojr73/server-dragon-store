@@ -6,7 +6,7 @@ import { organizations } from '@prisma/client';
 export class OrganizationRepository {
   constructor(private prisma: PrismaService) {}
 
-  findFirst(data: any) {
+  findFirst(data: Partial<organizations>) {
     return this.prisma.organizations.findFirst({
       where: data,
     });
