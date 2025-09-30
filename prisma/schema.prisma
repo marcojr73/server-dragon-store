@@ -106,7 +106,7 @@ model products {
   name        String
   description String?
   value       Int
-  picture     String?
+  picture     String?  @default("https://cdn.prod.website-files.com/67ebdcb55fb853aeb815e297/682b3593edb188d6cc83238c_closeup-view-dragon-eyes-with-blue-scales%20zoom.jpg")
   storeId     Int
   createdAt   DateTime @default(now())
 

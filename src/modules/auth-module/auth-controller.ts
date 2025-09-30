@@ -52,7 +52,6 @@ export class AuthController {
   @Post('/sign-in/organization')
   async organization(@Req() req: Request, @Res() res: Response) {
     const body = req.body;
-
     const accessToken = await this.authBackofficeUserUseCase.execute(body);
 
     return res.status(200).send({

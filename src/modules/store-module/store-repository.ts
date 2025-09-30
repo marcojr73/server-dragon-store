@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma-module/prisma-service';
+import { PrismaService } from '../../core/prisma-module/prisma-service';
 
 @Injectable()
 export class StoreRepository {
@@ -17,7 +17,7 @@ export class StoreRepository {
   }
 
   listProductsOfStoreByOrganizationId(organizationId: number) {
-    return this.prisma.store.findFirst({
+    return this.prisma.store.findFirstOrThrow({
       where: {
         organizationId,
       },

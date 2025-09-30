@@ -68,9 +68,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       } else {
         console.log('🆕 Criando novo usuário');
 
-        const organization = await this.organizationRepository.findFirst({
-          id: 1,
-        });
+        const organization = await this.organizationRepository.findFirst();
 
         if (!organization) {
           throw new Error('Organization not found');

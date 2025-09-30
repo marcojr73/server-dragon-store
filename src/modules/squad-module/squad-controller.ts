@@ -14,7 +14,7 @@ import { UserRepository } from '../user-module/user-repository';
 import { SquadRepository } from './squad-repository';
 import { SquadUseCase } from './squad-use-case';
 
-@Controller('squad')
+@Controller('squads')
 export class SquadController {
   constructor(
     private readonly userRepository: UserRepository,
