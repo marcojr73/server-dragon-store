@@ -19,6 +19,8 @@ export class ProductsRepository {
         description: true,
         value: true,
         picture: true,
+        availableStartAt: true,
+        availableEndAt: true,
       },
     });
   }

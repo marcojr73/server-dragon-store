@@ -8,31 +8,31 @@ export class SeederService {
 
   async seed(): Promise<void> {
     await this.prismaService.$transaction(async () => {
-      // const organization = await this.prismaService.organizations.create({
-      //   data: {
-      //     name: 'Uex tecnologia',
-      //     color: '#2ec7d6',
-      //   },
-      // });
-      // const store = await this.prismaService.store.create({
-      //   data: {
-      //     name: 'Uex store',
-      //     organizationId: organization.id,
-      //   },
-      // });
-      // await this.prismaService.products.createMany({ data: productsList });
+      const organization = await this.prismaService.organizations.create({
+        data: {
+          name: 'Uex tecnologia',
+          color: '#2ec7d6',
+        },
+      });
+      const store = await this.prismaService.store.create({
+        data: {
+          name: 'Uex store',
+          organizationId: organization.id,
+        },
+      });
+      await this.prismaService.products.createMany({ data: productsList });
       await this.prismaService.users.createMany({ data: users });
-      // await this.prismaService.users.create({
-      //   data: {
-      //     userName: 'teste',
-      //     email: 'admin@uex.io',
-      //     coins: 100,
-      //     gas: 100,
-      //     password: await AuthService.generateEncryptedPassword('admin'),
-      //     organizationId: organization.id,
-      //     isAdmin: true,
-      //   },
-      // });
+      await this.prismaService.users.create({
+        data: {
+          userName: 'teste',
+          email: 'admin@uex.io',
+          coins: 100,
+          gas: 100,
+          password: await AuthService.generateEncryptedPassword('admin'),
+          organizationId: organization.id,
+          isAdmin: true,
+        },
+      });
     });
   }
 }

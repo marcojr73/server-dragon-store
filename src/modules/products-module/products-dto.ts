@@ -1,4 +1,5 @@
 import {
+  IsDate,
   IsNumber,
   IsOptional,
   IsString,
@@ -16,6 +17,14 @@ export class CreateOrUpdateProductDto {
   @IsString()
   @MaxLength(1000)
   description: string;
+
+  @IsOptional()
+  @IsDate()
+  availableStartAt: Date;
+
+  @IsOptional()
+  @IsDate()
+  availableEndAt: Date;
 
   @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)

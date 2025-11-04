@@ -1,9 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma-module/prisma-service';
+import { squads } from '@prisma/client';
 
 @Injectable()
 export class SquadRepository {
   constructor(private prisma: PrismaService) {}
+
+  private get repository() {
+    return this.prisma.squads;
+  }
+
+  create(
+    data: Partial<squads> & { organizationId: number } & { name: string },
+  ) {
+    return this.repository.create({
+      data,
+    });
+  }
 
   getSquadsWithCurrentMonthScores(organizationId?: number) {
     const now = new Date();
@@ -27,6 +40,14 @@ export class SquadRepository {
         description: true,
         color: true,
         logo: true,
+        squadLeader: {
+          select: {
+            id: true,
+            userName: true,
+            picture: true,
+            email: true,
+          },
+        },
         squadScores: {
           select: {
             score: true,
