@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { SquadRepository } from './squad-repository';
-import { CreateOrUpdateSquadDto } from './squad-dto';
-import type { TUser } from '../user-module/interfaces';
+import { SquadRepository } from '../repositories/squad-repository';
+import { CreateOrUpdateSquadDto } from '../dtos/squad-dto';
+import type { TUser } from '../../user-module/interfaces';
 
 @Injectable()
 export class SquadUseCase {
@@ -27,7 +27,21 @@ export class SquadUseCase {
       description: createOrUpdateSquadDto.description,
       color: createOrUpdateSquadDto.color,
       logo: createOrUpdateSquadDto.logo,
+      squadLeaderId: createOrUpdateSquadDto.squadLeaderId,
       organizationId: user.organizationId,
     });
+  }
+
+  async update(createOrUpdateSquadDto: CreateOrUpdateSquadDto, id: number) {
+    return this.squadRepository.update(
+      {
+        name: createOrUpdateSquadDto.name,
+        description: createOrUpdateSquadDto.description,
+        color: createOrUpdateSquadDto.color,
+        logo: createOrUpdateSquadDto.logo,
+        squadLeaderId: createOrUpdateSquadDto.squadLeaderId,
+      },
+      id,
+    );
   }
 }

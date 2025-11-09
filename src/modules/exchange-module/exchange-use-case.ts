@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { ExchangeRepository } from './exchange-repository';
 import { UserRepository } from '../user-module/user-repository';
-import { SquadRepository } from '../squad-module/squad-repository';
+import { SquadRepository } from '../squad-module/repositories/squad-repository';
 import { PrismaService } from '../../core/prisma-module/prisma-service';
 import { HistoryRepository } from '../history-module/history-repository';
 

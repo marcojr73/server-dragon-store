@@ -1,19 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../core/prisma-module/prisma-service';
+import { PrismaService } from '../../../core/prisma-module/prisma-service';
 import { squads } from '@prisma/client';
 
 @Injectable()
 export class SquadRepository {
   constructor(private prisma: PrismaService) {}
 
-  private get repository() {
+  private get squads() {
     return this.prisma.squads;
+  }
+
+  private get userSquads() {
+    return this.prisma.userSquads;
   }
 
   create(
     data: Partial<squads> & { organizationId: number } & { name: string },
   ) {
-    return this.repository.create({
+    return this.squads.create({
+      data,
+    });
+  }
+
+  update(data: Partial<squads>, id: number) {
+    return this.squads.update({
+      where: {
+        id,
+      },
       data,
     });
   }
@@ -40,14 +53,7 @@ export class SquadRepository {
         description: true,
         color: true,
         logo: true,
-        squadLeader: {
-          select: {
-            id: true,
-            userName: true,
-            picture: true,
-            email: true,
-          },
-        },
+        squadLeaderId: true,
         squadScores: {
           select: {
             score: true,
@@ -70,6 +76,48 @@ export class SquadRepository {
   }) {
     return this.prisma.squadScores.create({
       data,
+    });
+  }
+
+  listUsersBySquadId(id: number) {
+    return this.squads.findFirst({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        squadLeaderId: true,
+        squadUsers: {
+          select: {
+            user: {
+              select: {
+                id: true,
+                userName: true,
+                picture: true,
+                email: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  createUserSquad(squadId: number, userId: number) {
+    return this.userSquads.create({
+      data: {
+        squadId,
+        userId,
+      },
+    });
+  }
+
+  deleteUserSquad(squadId: number, userId: number) {
+    return this.userSquads.deleteMany({
+      where: {
+        squadId,
+        userId,
+      },
     });
   }
 }
