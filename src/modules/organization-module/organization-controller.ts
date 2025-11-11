@@ -4,7 +4,7 @@ import type { Request, Response } from 'express';
 import { AdminGuard } from '../auth-module/guards/admin-guard';
 import { UpdateOrganizationUseCase } from './use-cases/update-organization.use-case';
 import { User } from '../auth-module/annotations/user-annotation';
-import type { TUser } from '../user-module/interfaces';
+import type { TSession } from '../user-module/interfaces';
 import { OrganizationRepository } from './organization-repository';
 
 @Controller('organization')
@@ -19,7 +19,7 @@ export class OrganizationController {
   async organization(
     @Req() req: Request,
     @Res() res: Response,
-    @User() reqUser: TUser,
+    @User() reqUser: TSession,
   ) {
     const organization = await this.organizationRepository.findFirst({
       id: reqUser.organizationId,

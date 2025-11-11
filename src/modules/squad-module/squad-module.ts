@@ -7,6 +7,8 @@ import { UsersSquadRepository } from './repositories/users-squad-repository';
 import { ListUsersSquad } from './use-cases/list-users-squad';
 import { AddUserSquadUseCase } from './use-cases/add-user-squad-use-case';
 import { RemoveUserSquadUseCase } from './use-cases/remove-user-squad-use-case';
+import { DeleteSquadUseCase } from './use-cases/delete-squad-use-case';
+import { ListSquadUser } from './use-cases/list-squad-user';
 
 @Module({
   imports: [UserModule],
@@ -16,6 +18,8 @@ import { RemoveUserSquadUseCase } from './use-cases/remove-user-squad-use-case';
     SquadUseCase,
     AddUserSquadUseCase,
     RemoveUserSquadUseCase,
+    DeleteSquadUseCase,
+    ListSquadUser,
     ListUsersSquad,
     SquadRepository,
     UsersSquadRepository,

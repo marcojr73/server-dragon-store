@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import type { Response } from 'express';
-import { TUser } from '../../user-module/interfaces';
+import { TSession } from '../../user-module/interfaces';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
-  generateAccessToken(user: TUser): string {
+  generateAccessToken(user: TSession): string {
     const payload = {
       id: user.id,
       email: user.email,

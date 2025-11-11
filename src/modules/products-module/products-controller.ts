@@ -15,7 +15,7 @@ import {
 import { JwtAuthGuard } from '../auth-module/guards/jwt-guard';
 import type { Request, Response } from 'express';
 import { User } from '../auth-module/annotations/user-annotation';
-import type { TUser } from '../user-module/interfaces';
+import type { TSession } from '../user-module/interfaces';
 import { UserRepository } from '../user-module/user-repository';
 import { ProductsRepository } from './products-repository';
 import { AdminGuard } from '../auth-module/guards/admin-guard';
@@ -35,7 +35,7 @@ export class ProductsController {
   async list(
     @Req() req: Request,
     @Res() res: Response,
-    @User() ReqUser: TUser,
+    @User() ReqUser: TSession,
   ) {
     const user = await this.userRepository.getUser({ id: ReqUser.id });
     if (!user) {
@@ -56,7 +56,7 @@ export class ProductsController {
     @Body(ValidationPipe) updateProductDto: CreateOrUpdateProductDto,
     @Req() req: Request,
     @Res() res: Response,
-    @User() reqUser: TUser,
+    @User() reqUser: TSession,
   ) {
     await this.productsRepository.update(+productId, updateProductDto);
     res.status(200).send({ id: productId });
@@ -68,7 +68,7 @@ export class ProductsController {
     @Body(ValidationPipe) dto: CreateOrUpdateProductDto,
     @Req() req: Request,
     @Res() res: Response,
-    @User() reqUser: TUser,
+    @User() reqUser: TSession,
   ) {
     const store = await this.storeRepository.findByOrganizationIdOrFail(
       reqUser.organizationId,
@@ -86,7 +86,7 @@ export class ProductsController {
     @Param('id') productId: string,
     @Req() req: Request,
     @Res() res: Response,
-    @User() reqUser: TUser,
+    @User() reqUser: TSession,
   ) {
     await this.productsRepository.deleteProduct(+productId);
     res.status(200).send({ id: productId });

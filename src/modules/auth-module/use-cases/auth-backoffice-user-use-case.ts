@@ -22,12 +22,10 @@ export class AuthBackofficeUserUseCase {
       throw new NotFoundException();
     }
 
-    // const isValidPassword = await this.authService.verifyPassword(
-    //   data.password,
-    //   user.password,
-    // );
-
-    const isValidPassword = true;
+    const isValidPassword = await this.authService.verifyPassword(
+      data.password,
+      user.password,
+    );
 
     if (!isValidPassword) {
       throw new UnprocessableEntityException();

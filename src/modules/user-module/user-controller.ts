@@ -16,7 +16,7 @@ import { UserService } from './user-service';
 import type { Request, Response } from 'express';
 import { JwtAuthGuard } from '../auth-module/guards/jwt-guard';
 import { User } from '../auth-module/annotations/user-annotation';
-import type { TUser } from './interfaces';
+import type { TSession } from './interfaces';
 import { UserRepository } from './user-repository';
 import { AdminGuard } from '../auth-module/guards/admin-guard';
 import { CreateOrUpdateUserDto } from './users-dto';
@@ -35,22 +35,24 @@ export class UserController {
   async getUser(
     @Req() req: Request,
     @Res() res: Response,
-    @User() ReqUser: TUser,
+    @User() ReqUser: TSession,
   ) {
     const user = await this.userRepository.getUser({ id: ReqUser.id });
     if (!user) {
       throw new UnauthorizedException();
     }
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     res.status(200).send(user);
   }
 
   @Get('balance')
   @UseGuards(JwtAuthGuard)
-  async getBalance(@Res() res: Response, @User() ReqUser: TUser) {
+  async getBalance(@Res() res: Response, @User() ReqUser: TSession) {
     const balance = await this.userRepository.getBalance({ id: ReqUser.id });
     if (!balance) {
       throw new UnauthorizedException();
     }
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     res.status(200).send(balance);
   }
 
@@ -62,7 +64,7 @@ export class UserController {
   async getEmployee(
     @Req() req: Request,
     @Res() res: Response,
-    @User() reqUser: TUser,
+    @User() reqUser: TSession,
   ) {
     const search = req.query.search as string;
     const employees = await this.userRepository.getEmployees(
@@ -70,6 +72,7 @@ export class UserController {
       reqUser.organizationId,
       search,
     );
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     res.status(200).send(employees);
   }
 
@@ -81,13 +84,14 @@ export class UserController {
   async list(
     @Req() req: Request,
     @Res() res: Response,
-    @User() reqUser: TUser,
+    @User() reqUser: TSession,
   ) {
     const search = req.query.search as string;
     const users = await this.userRepository.getUsersByOrganizationId(
       reqUser.organizationId,
       search,
     );
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     res.status(200).send({ users });
   }
 
@@ -116,6 +120,7 @@ export class UserController {
     }
     console.log(data);
     await this.userRepository.update(data, +userId);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     res.status(200).send({ id: userId });
   }
 
@@ -125,7 +130,7 @@ export class UserController {
     @Body(ValidationPipe) createOrUpdateUserDto: CreateOrUpdateUserDto,
     @Req() req: Request,
     @Res() res: Response,
-    @User() reqUser: TUser,
+    @User() reqUser: TSession,
   ) {
     const data = {
       ...createOrUpdateUserDto,
@@ -136,6 +141,7 @@ export class UserController {
       microsoftId: null,
     };
     const user = await this.userRepository.create(data);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     res.status(201).send({ id: user.id });
   }
 
@@ -148,9 +154,10 @@ export class UserController {
     @Param('id') userId: string,
     @Req() req: Request,
     @Res() res: Response,
-    @User() reqUser: TUser,
+    @User() reqUser: TSession,
   ) {
     const user = await this.userRepository.delete(+userId);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     res.status(200).send({ id: user.id });
   }
 }

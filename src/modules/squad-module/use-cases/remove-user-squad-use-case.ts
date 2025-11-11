@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { SquadRepository } from '../repositories/squad-repository';
-import { TUser } from '../../user-module/interfaces';
+import { TSession } from '../../user-module/interfaces';
 import { UserRepository } from '../../user-module/user-repository';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class RemoveUserSquadUseCase {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async execute(squadId: number, userId: number, user: TUser) {
+  async execute(squadId: number, userId: number, user: TSession) {
     const userToRemove = await this.userRepository.getUser({ id: userId });
 
     if (!userToRemove) {

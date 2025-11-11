@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { SquadRepository } from '../repositories/squad-repository';
-import { CreateOrUpdateSquadDto } from '../dtos/squad-dto';
-import type { TUser } from '../../user-module/interfaces';
+import type { TSession } from '../../user-module/interfaces';
+import { CreateSquadDto } from '../dtos/create-squad-dto';
 
 @Injectable()
 export class SquadUseCase {
@@ -21,7 +21,7 @@ export class SquadUseCase {
       .sort((a, b) => b.score - a.score);
   }
 
-  async create(createOrUpdateSquadDto: CreateOrUpdateSquadDto, user: TUser) {
+  async create(createOrUpdateSquadDto: CreateSquadDto, user: TSession) {
     return this.squadRepository.create({
       name: createOrUpdateSquadDto.name,
       description: createOrUpdateSquadDto.description,
@@ -32,7 +32,7 @@ export class SquadUseCase {
     });
   }
 
-  async update(createOrUpdateSquadDto: CreateOrUpdateSquadDto, id: number) {
+  async update(createOrUpdateSquadDto: CreateSquadDto, id: number) {
     return this.squadRepository.update(
       {
         name: createOrUpdateSquadDto.name,

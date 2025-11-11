@@ -14,6 +14,15 @@ export class SquadRepository {
     return this.prisma.userSquads;
   }
 
+  list(data: Partial<squads>) {
+    return this.squads.findFirst({
+      where: data,
+      include: {
+        squadUsers: true,
+      },
+    });
+  }
+
   create(
     data: Partial<squads> & { organizationId: number } & { name: string },
   ) {
@@ -28,6 +37,14 @@ export class SquadRepository {
         id,
       },
       data,
+    });
+  }
+
+  delete(id: number) {
+    return this.squads.delete({
+      where: {
+        id,
+      },
     });
   }
 
@@ -117,6 +134,31 @@ export class SquadRepository {
       where: {
         squadId,
         userId,
+      },
+    });
+  }
+
+  listSquadUser(userId: number) {
+    return this.userSquads.findMany({
+      where: {
+        userId,
+      },
+      select: {
+        squad: {
+          select: {
+            id: true,
+            name: true,
+            squadLeaderId: true,
+          },
+        },
+        user: {
+          select: {
+            id: true,
+            userName: true,
+            picture: true,
+            organizationId: true,
+          },
+        },
       },
     });
   }

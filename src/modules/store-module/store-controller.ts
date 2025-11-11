@@ -10,7 +10,7 @@ import {
 import { JwtAuthGuard } from '../auth-module/guards/jwt-guard';
 import type { Request, Response } from 'express';
 import { User } from '../auth-module/annotations/user-annotation';
-import type { TUser } from '../user-module/interfaces';
+import type { TSession } from '../user-module/interfaces';
 import { UserRepository } from '../user-module/user-repository';
 import { StoreRepository } from './store-repository';
 import { StoreUseCase } from './store-use-case';
@@ -29,7 +29,7 @@ export class StoreController {
   async list(
     @Req() req: Request,
     @Res() res: Response,
-    @User() ReqUser: TUser,
+    @User() ReqUser: TSession,
   ) {
     const user = await this.userRepository.getUser({ id: ReqUser.id });
     if (!user) {
@@ -47,7 +47,7 @@ export class StoreController {
   async rescue(
     @Req() req: Request,
     @Res() res: Response,
-    @User() ReqUser: TUser,
+    @User() ReqUser: TSession,
   ) {
     const { productId } = req.body;
     await this.storeUseCase.rescue(ReqUser.id, productId);

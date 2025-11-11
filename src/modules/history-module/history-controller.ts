@@ -9,7 +9,7 @@ import {
 import { JwtAuthGuard } from '../auth-module/guards/jwt-guard';
 import type { Request, Response } from 'express';
 import { User } from '../auth-module/annotations/user-annotation';
-import type { TUser } from '../user-module/interfaces';
+import type { TSession } from '../user-module/interfaces';
 import { UserRepository } from '../user-module/user-repository';
 import { HistoryRepository } from './history-repository';
 
@@ -25,7 +25,7 @@ export class HistoryController {
   async history(
     @Req() req: Request,
     @Res() res: Response,
-    @User() ReqUser: TUser,
+    @User() ReqUser: TSession,
   ) {
     let filterUserId: string | number = req.query.userId as string;
     if (filterUserId && typeof filterUserId === 'string') {

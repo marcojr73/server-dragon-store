@@ -1,4 +1,4 @@
-export type TUser = {
+export type TSession = {
   id: number;
   email: string;
   userName: string;

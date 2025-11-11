@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { SquadRepository } from '../repositories/squad-repository';
-import { TUser } from '../../user-module/interfaces';
+import { TSession } from '../../user-module/interfaces';
 import { AddUserSquadDto } from '../dtos/add-user-squad-dto';
 import { UserRepository } from '../../user-module/user-repository';
 
@@ -11,7 +11,7 @@ export class AddUserSquadUseCase {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async execute(user: TUser, payload: AddUserSquadDto, squadId: number) {
+  async execute(user: TSession, payload: AddUserSquadDto, squadId: number) {
     const userToAdd = await this.userRepository.getUser({ id: payload.id });
 
     if (!userToAdd) {
