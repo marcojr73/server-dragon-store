@@ -148,6 +148,7 @@ export class SquadRepository {
           select: {
             id: true,
             name: true,
+            logo: true,
             squadLeaderId: true,
           },
         },

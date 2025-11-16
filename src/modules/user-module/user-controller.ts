@@ -21,6 +21,7 @@ import { UserRepository } from './user-repository';
 import { AdminGuard } from '../auth-module/guards/admin-guard';
 import { CreateOrUpdateUserDto } from './users-dto';
 import { AuthService } from '../auth-module/services/auth-service';
+import { CreateUserUseCase } from './use-cases/create-user-use-case';
 
 @Controller('user')
 export class UserController {
@@ -28,6 +29,7 @@ export class UserController {
     private readonly userService: UserService,
     private readonly userRepository: UserRepository,
     private readonly authService: AuthService,
+    private readonly createUserUseCase: CreateUserUseCase,
   ) {}
 
   @Get('/')
@@ -118,7 +120,6 @@ export class UserController {
     } else {
       delete data.password;
     }
-    console.log(data);
     await this.userRepository.update(data, +userId);
     await new Promise((resolve) => setTimeout(resolve, 2000));
     res.status(200).send({ id: userId });
@@ -128,19 +129,13 @@ export class UserController {
   @UseGuards(JwtAuthGuard, AdminGuard)
   async create(
     @Body(ValidationPipe) createOrUpdateUserDto: CreateOrUpdateUserDto,
-    @Req() req: Request,
     @Res() res: Response,
-    @User() reqUser: TSession,
+    @User() session: TSession,
   ) {
-    const data = {
-      ...createOrUpdateUserDto,
-      password:
-        createOrUpdateUserDto.password ?? AuthService.generatePassword(),
-      organizationId: reqUser.organizationId,
-      googleId: null,
-      microsoftId: null,
-    };
-    const user = await this.userRepository.create(data);
+    const user = await this.createUserUseCase.execute(
+      createOrUpdateUserDto,
+      session,
+    );
     await new Promise((resolve) => setTimeout(resolve, 2000));
     res.status(201).send({ id: user.id });
   }

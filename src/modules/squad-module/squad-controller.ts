@@ -41,6 +41,7 @@ export class SquadController {
   @UseGuards(JwtAuthGuard)
   async squad(@Res() res: Response) {
     const squads = await this.squadUseCase.getSquadsOrderedByScore();
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     res.status(200).send(squads);
   }
 
@@ -52,6 +53,7 @@ export class SquadController {
     @User() ReqUser: TSession,
   ) {
     const squad = await this.squadUseCase.create(dto, ReqUser);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     res.status(201).send(squad);
   }
 
@@ -98,7 +100,7 @@ export class SquadController {
     const usersSquad = await this.addUserSquadUseCase.execute(
       ReqUser,
       payload,
-      id,
+      +id,
     );
     await new Promise((resolve) => setTimeout(resolve, 2000));
 

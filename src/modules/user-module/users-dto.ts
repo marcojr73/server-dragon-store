@@ -24,12 +24,4 @@ export class CreateOrUpdateUserDto {
   @IsString()
   @IsOptional()
   password?: string;
-
-  @IsNumber()
-  @Min(0)
-  coins: number;
-
-  @IsNumber()
-  @Min(0)
-  gas: number;
 }

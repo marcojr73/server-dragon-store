@@ -9,6 +9,7 @@ export class SquadUseCase {
 
   async getSquadsOrderedByScore() {
     const squads = await this.squadRepository.getSquadsWithCurrentMonthScores();
+    console.log(squads);
     return squads
       .map((squad) => {
         const score = squad.squadScores.reduce(

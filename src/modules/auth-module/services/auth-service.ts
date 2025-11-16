@@ -21,7 +21,7 @@ export class AuthService {
       organizationId: user.organizationId,
     };
 
-    return this.jwtService.sign(payload);
+    return this.jwtService.sign(payload, { expiresIn: '7d' });
   }
 
   redirectWithAccessToken(res: Response, accessToken: string): void {

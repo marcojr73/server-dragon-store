@@ -70,6 +70,7 @@ export class ProductsController {
     @Res() res: Response,
     @User() reqUser: TSession,
   ) {
+    console.log(dto);
     const store = await this.storeRepository.findByOrganizationIdOrFail(
       reqUser.organizationId,
     );
