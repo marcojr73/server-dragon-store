@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../core/prisma-module/prisma-service';
+import { PrismaService } from '@core/prisma-module/prisma-service';
 import { history } from '@prisma/client';
 
 @Injectable()
@@ -17,6 +17,7 @@ export class HistoryRepository {
           select: {
             id: true,
             userId: true,
+            createdAt: true,
             user: {
               select: {
                 id: true,

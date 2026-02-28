@@ -14,7 +14,7 @@ export class SeederService {
           color: '#2ec7d6',
         },
       });
-      const store = await this.prismaService.store.create({
+      await this.prismaService.store.create({
         data: {
           name: 'Uex store',
           organizationId: organization.id,
@@ -33,6 +33,17 @@ export class SeederService {
           isAdmin: true,
         },
       });
+      await this.prismaService.exchanges.createMany({
+        data: exchanges,
+      });
+      const response = await this.prismaService.exchanges.findMany();
+      const history = response.map((e) => {
+        return {
+          organizationId: 1,
+          exchangeId: e.id,
+        };
+      });
+      await this.prismaService.history.createMany({ data: history });
     });
   }
 }
@@ -142,5 +153,56 @@ const users = [
       'https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Official_Presidential_Portrait_of_President_Donald_J._Trump_%282025%29.jpg/330px-Official_Presidential_Portrait_of_President_Donald_J._Trump_%282025%29.jpg',
     organizationId: 1,
     password: '$2b$10$zGlgo09jmeuvPP7hpfVj5.nh1DI3TsSateAlXEArJHYFIC40m49G2',
+  },
+];
+
+const exchanges = [
+  {
+    userId: 1,
+    employeeId: 2,
+    value: 10,
+    message: 'Valeu tamo junto!!',
+  },
+  {
+    userId: 2,
+    employeeId: 3,
+    value: 10,
+    message: 'Valeu tamo junto!!',
+  },
+  {
+    userId: 3,
+    employeeId: 4,
+    value: 10,
+    message: 'Valeu tamo junto!!',
+  },
+  {
+    userId: 4,
+    employeeId: 5,
+    value: 10,
+    message: 'Valeu tamo junto!!',
+  },
+  {
+    userId: 5,
+    employeeId: 4,
+    value: 10,
+    message: 'Valeu tamo junto!!',
+  },
+  {
+    userId: 4,
+    employeeId: 3,
+    value: 10,
+    message: 'Valeu tamo junto!!',
+  },
+  {
+    userId: 3,
+    employeeId: 2,
+    value: 10,
+    message: 'Valeu tamo junto!!',
+  },
+  {
+    userId: 2,
+    employeeId: 1,
+    value: 10,
+    message: 'Valeu tamo junto!!',
   },
 ];

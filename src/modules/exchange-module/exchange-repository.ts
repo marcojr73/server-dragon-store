@@ -21,4 +21,24 @@ export class ExchangeRepository {
       },
     });
   }
+
+  getExchangesFromDate(organizationId: number, startDate: Date) {
+    return this.prisma.exchanges.findMany({
+      where: {
+        createdAt: {
+          gte: startDate,
+        },
+        user: {
+          organizationId,
+        },
+      },
+      select: {
+        id: true,
+        userId: true,
+        employeeId: true,
+        value: true,
+        message: true,
+      },
+    });
+  }
 }

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -32,36 +33,24 @@ export class UserController {
     private readonly createUserUseCase: CreateUserUseCase,
   ) {}
 
-  @Get('/')
+  @Get(':id/balance')
   @UseGuards(JwtAuthGuard)
-  async getUser(
-    @Req() req: Request,
-    @Res() res: Response,
-    @User() ReqUser: TSession,
-  ) {
-    const user = await this.userRepository.getUser({ id: ReqUser.id });
-    if (!user) {
-      throw new UnauthorizedException();
+  async getBalance(@Param('id') id: string, @Res() res: Response) {
+    const userId = Number(id);
+    if (typeof userId !== 'number') {
+      throw new BadRequestException();
     }
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    res.status(200).send(user);
-  }
-
-  @Get('balance')
-  @UseGuards(JwtAuthGuard)
-  async getBalance(@Res() res: Response, @User() ReqUser: TSession) {
-    const balance = await this.userRepository.getBalance({ id: ReqUser.id });
+    const balance = await this.userRepository.getBalance({ id: userId });
     if (!balance) {
       throw new UnauthorizedException();
     }
-    await new Promise((resolve) => setTimeout(resolve, 2000));
     res.status(200).send(balance);
   }
 
   /**
    * Endpoint para listagem de usuários no aplicativo, não precisa de um token admin
    */
-  @Get('employee')
+  @Get('searches')
   @UseGuards(JwtAuthGuard)
   async getEmployee(
     @Req() req: Request,
@@ -74,7 +63,6 @@ export class UserController {
       reqUser.organizationId,
       search,
     );
-    await new Promise((resolve) => setTimeout(resolve, 2000));
     res.status(200).send(employees);
   }
 
@@ -93,8 +81,18 @@ export class UserController {
       reqUser.organizationId,
       search,
     );
-    await new Promise((resolve) => setTimeout(resolve, 2000));
     res.status(200).send({ users });
+  }
+
+  @Get(':id')
+  @UseGuards(JwtAuthGuard)
+  async getUser(@Param('id') id: number, @Res() res: Response) {
+    const user = await this.userRepository.getUser({ id: Number(id) });
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+
+    return res.status(200).send(user);
   }
 
   /**
@@ -121,7 +119,6 @@ export class UserController {
       delete data.password;
     }
     await this.userRepository.update(data, +userId);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
     res.status(200).send({ id: userId });
   }
 

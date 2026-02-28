@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Resgate de Benefício</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .header {
+      background: #000;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 10px auto;
+    }
+
+    .header h1 {
+      color: #ffffff;
+      margin: 0;
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .content {
+      padding: 30px;
+    }
+
+    .greeting {
+      font-size: 16px;
+      color: #333333;
+      margin-bottom: 16px;
+    }
+
+    .intro-text {
+      font-size: 14px;
+      color: #666666;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .product-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 20px;
+      background-color: #fafafa;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .product-image {
+      width: 100%;
+      max-width: 250px;
+      height: 180px;
+      margin: 0 auto 16px auto;
+      border-radius: 8px;
+      background-color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-size: 14px;
+    }
+
+    .product-image img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+
+    .product-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 12px;
+    }
+
+    .info-text {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 6px;
+    }
+
+    .alert {
+      background-color: #fff7ed;
+      border: 1px solid #fed7aa;
+      color: #9a3412;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .alert strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+
+    .footer {
+      padding: 20px 30px;
+      text-align: center;
+      font-size: 12px;
+      color: #777777;
+      background-color: #f9fafb;
+    }
+
+    @media only screen and (max-width: 600px) {
+      .content {
+        padding: 20px;
+      }
+
+      .product-image {
+        height: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <img src="cid:logo" alt="Logo">
+    <h1>Resgate de Benefício</h1>
+  </div>
+
+  <div class="content">
+    <div class="greeting">
+      Olá, <strong>{{userName}}</strong>!
+    </div>
+
+    <div class="intro-text">
+      Um novo benefício foi resgatado na loja. Confira os detalhes abaixo:
+    </div>
+
+    <div class="product-card">
+
+      <div class="product-image">
+        <img src="{{productImage}}" alt="Imagem do produto">
+      </div>
+
+      <div class="product-name">{{productName}}</div>
+
+      <div class="info-text">
+        <strong>Usuário:</strong> {{userName}}
+      </div>
+
+      <div class="info-text">
+        <strong>Data do resgate:</strong> {{date}}
+      </div>
+    </div>
+
+    <div class="alert">
+      <strong>Ação necessária</strong>
+      O usuário deve entrar em contato com o setor de <strong>Recursos Humanos (RH)</strong> para confirmar e validar o
+      recebimento deste benefício.
+    </div>
+
+    <div class="intro-text">
+      Este e-mail é apenas uma notificação automática do sistema.
+    </div>
+  </div>
+
+  <div class="footer">
+    © 2025 Dragon Store.
+  </div>
+
+</div>
+</body>
+</html>

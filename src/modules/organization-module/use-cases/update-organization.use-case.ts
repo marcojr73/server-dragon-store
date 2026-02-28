@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { OrganizationRepository } from '../organization-repository';
-import { organizations } from '@prisma/client';
+import { UpdateOrganizationDto } from '../dtos/update-organization-dto';
 
 @Injectable()
 export class UpdateOrganizationUseCase {
   constructor(private organizationRepository: OrganizationRepository) {}
 
-  async execute(data: Partial<organizations> & { id: organizations['id'] }) {
-    await this.organizationRepository.update(data);
+  async execute(data: UpdateOrganizationDto, id: number) {
+    await this.organizationRepository.update(data, id);
   }
 }

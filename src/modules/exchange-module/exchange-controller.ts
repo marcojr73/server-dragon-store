@@ -1,17 +1,16 @@
-import { Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import type { Request, Response } from 'express';
 import { User } from '../auth-module/annotations/user-annotation';
 import type { TSession } from '../user-module/interfaces';
 import { UserRepository } from '../user-module/user-repository';
 import { ExchangeUseCase } from './exchange-use-case';
 import { JwtAuthGuard } from '../auth-module/guards/jwt-guard';
+import { NotifyExchangesUseCase } from '../clain-module/use-cases/notify-exchanges-use-case';
+import { AdminGuard } from '../auth-module/guards/admin-guard';
 
 @Controller('exchange')
 export class ExchangeController {
-  constructor(
-    private readonly userRepository: UserRepository,
-    private readonly exchangeUseCase: ExchangeUseCase,
-  ) {}
+  constructor(private readonly exchangeUseCase: ExchangeUseCase) {}
 
   @Post('')
   @UseGuards(JwtAuthGuard)

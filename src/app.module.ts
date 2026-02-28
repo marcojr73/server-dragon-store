@@ -11,6 +11,8 @@ import { SquadModule } from './modules/squad-module/squad-module';
 import { ExchangeModule } from './modules/exchange-module/exchange-module';
 import { StoreModule } from './modules/store-module/store-module';
 import { ProductsModule } from './modules/products-module/products-module';
+import { MailModule } from '@core/mail-module/mail-module';
+import { ClaimModule } from './modules/clain-module/claim-module';
 
 @Module({
   imports: [
@@ -20,6 +22,7 @@ import { ProductsModule } from './modules/products-module/products-module';
     }),
     PrismaModule,
     AuthModule,
+    ClaimModule,
     UserModule,
     OrganizationModule,
     HistoryModule,
@@ -27,6 +30,7 @@ import { ProductsModule } from './modules/products-module/products-module';
     ProductsModule,
     SquadModule,
     ExchangeModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

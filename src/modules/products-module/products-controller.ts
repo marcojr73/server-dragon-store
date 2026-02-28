@@ -43,7 +43,7 @@ export class ProductsController {
     }
 
     const products = await this.productsRepository.listProductsByOrganizationId(
-      user.organization.id,
+      user.organizationId,
     );
 
     res.status(200).send({ products });

@@ -21,7 +21,7 @@ export class AddUserSquadUseCase {
     if (
       !this.isUserFromOrganization(
         user.organizationId,
-        userToAdd.organization.id,
+        userToAdd.organizationId,
       )
     ) {
       throw new BadRequestException('User does not belong to organization');

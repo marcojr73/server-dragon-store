@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma-module/prisma-service';
 import { organizations } from '@prisma/client';
+import { UpdateOrganizationDto } from './dtos/update-organization-dto';
 
 @Injectable()
 export class OrganizationRepository {
@@ -12,10 +13,10 @@ export class OrganizationRepository {
     });
   }
 
-  update(data: Partial<organizations> & { id: organizations['id'] }) {
+  update(data: UpdateOrganizationDto, id: number) {
     return this.prisma.organizations.update({
       where: {
-        id: data.id,
+        id,
       },
       data: data,
     });

@@ -40,12 +40,7 @@ export class UserRepository {
             },
           },
         },
-        organization: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
+        organizationId: true,
       },
     });
   }
@@ -159,13 +154,7 @@ export class UserRepository {
         coins: true,
         gas: true,
         isAdmin: true,
-        organization: {
-          select: {
-            id: true,
-            name: true,
-            logo: true,
-          },
-        },
+        organizationId: true,
       },
       orderBy: {
         userName: 'asc',

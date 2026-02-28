@@ -20,7 +20,7 @@ export class RemoveUserSquadUseCase {
     if (
       !this.isUserFromOrganization(
         user.organizationId,
-        userToRemove.organization.id,
+        userToRemove.organizationId,
       )
     ) {
       throw new BadRequestException('User does not belong to organization');

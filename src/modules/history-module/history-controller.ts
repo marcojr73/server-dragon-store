@@ -37,7 +37,7 @@ export class HistoryController {
     }
     const history = await this.historyRepository.findMany(
       {
-        organizationId: user.organization.id,
+        organizationId: user.organizationId,
       },
       filterUserId as number,
     );

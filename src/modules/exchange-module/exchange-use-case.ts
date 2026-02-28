@@ -68,14 +68,14 @@ export class ExchangeUseCase {
           await this.squadRepository.createSquadScore({
             score: coins,
             squadId: userSquad.squad.id,
-            organizationId: people.employee.organization.id,
+            organizationId: people.employee.organizationId,
           });
         })();
       });
       if (onHistory) {
         await this.historyRepository.create({
           exchangeId: exchange.id,
-          organizationId: people.user.organization.id,
+          organizationId: people.user.organizationId,
         });
       }
       return exchange.id;

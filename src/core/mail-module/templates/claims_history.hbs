@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Relatório de Resgates</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .header {
+      background: #000;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header img {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 10px;
+    }
+
+    .header h1 {
+      color: #ffffff;
+      margin: 0;
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .content {
+      padding: 30px;
+    }
+
+    .greeting {
+      font-size: 16px;
+      color: #333333;
+      margin-bottom: 16px;
+    }
+
+    .intro-text {
+      font-size: 14px;
+      color: #666666;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .period-box {
+      background-color: #fafafa;
+      border: 1px solid #e5e7eb;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-bottom: 24px;
+    }
+
+    th {
+      background-color: #000;
+      color: #ffffff;
+      padding: 10px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    td {
+      border-bottom: 1px solid #e5e7eb;
+      padding: 10px;
+      color: #333;
+    }
+
+    tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+
+    .alert {
+      background-color: #fff7ed;
+      border: 1px solid #fed7aa;
+      color: #9a3412;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .footer {
+      padding: 20px 30px;
+      text-align: center;
+      font-size: 12px;
+      color: #777777;
+      background-color: #f9fafb;
+    }
+
+    @media only screen and (max-width: 600px) {
+      .content {
+        padding: 20px;
+      }
+
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      th {
+        display: none;
+      }
+
+      td {
+        padding: 8px;
+        border: none;
+        border-bottom: 1px solid #e5e7eb;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<div class="container">
+
+  <div class="header">
+    <img src="cid:logo" alt="Logo">
+    <h1>Relatório de Resgates</h1>
+  </div>
+
+  <div class="content">
+
+    <div class="greeting">
+      Olá, <strong>{{adminName}}</strong>!
+    </div>
+
+    <div class="intro-text">
+      Segue abaixo a listagem de todos os resgates realizados na loja no período informado.
+    </div>
+
+    <div class="period-box">
+      <strong>Período:</strong> {{startAt}} até {{endAt}}<br>
+      <strong>Total de resgates:</strong> {{claimsLength}}
+    </div>
+
+    <table>
+      <thead>
+      <tr>
+        <th>Usuário</th>
+        <th>Produto</th>
+        <th>Data do Resgate</th>
+      </tr>
+      </thead>
+      <tbody>
+      {{#each claims}}
+        <tr>
+          <td>{{userName}}</td>
+          <td>{{productName}}</td>
+          <td>{{date}}</td>
+        </tr>
+      {{/each}}
+      </tbody>
+    </table>
+
+    <div class="intro-text">
+      Este e-mail é gerado automaticamente pelo sistema e tem caráter informativo.
+    </div>
+
+  </div>
+
+  <div class="footer">
+    © 2025 Dragon Store.
+  </div>
+
+</div>
+</body>
+</html>

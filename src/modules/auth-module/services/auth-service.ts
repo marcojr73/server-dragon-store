@@ -27,6 +27,7 @@ export class AuthService {
   redirectWithAccessToken(res: Response, accessToken: string): void {
     console.log(accessToken);
     const uiUrl = this.configService.get<string>('UI_URL');
+    console.log(accessToken);
     const redirectUrl = `${uiUrl}://auth?access_token=${accessToken}`;
     res.redirect(redirectUrl);
   }
