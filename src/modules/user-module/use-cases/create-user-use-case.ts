@@ -3,10 +3,14 @@ import { UserRepository } from '../user-repository';
 import { AuthService } from '../../auth-module/services/auth-service';
 import { CreateOrUpdateUserDto } from '../users-dto';
 import { TSession } from '../interfaces';
+import { MailService } from '@core/mail-module/mail-service';
 
 @Injectable()
 export class CreateUserUseCase {
-  constructor(private readonly repository: UserRepository) {}
+  constructor(
+    private readonly repository: UserRepository,
+    private readonly mailService: MailService,
+  ) {}
 
   async execute(payload: CreateOrUpdateUserDto, session: TSession) {
     const data = {
@@ -18,6 +22,8 @@ export class CreateUserUseCase {
       googleId: null,
       microsoftId: null,
     };
-    return this.repository.create(data);
+    const user = await this.repository.create(data);
+    await this.mailService.sendWelcomeEmail(payload.email, payload.userName);
+    return user;
   }
 }

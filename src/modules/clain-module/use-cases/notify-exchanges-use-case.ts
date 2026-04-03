@@ -30,52 +30,14 @@ export class NotifyExchangesUseCase {
       throw new BadRequestException('Organization has no responsible email');
     }
 
-    const startAt = new Date();
-    const endAt = new Date();
-
     const reportSendInterval: ReportInterval = organization.reportSendInterval;
 
-    switch (reportSendInterval) {
-      case ReportInterval.WEEKLY: {
-        const today = new Date();
-
-        const startOfWeek = new Date(today);
-        startOfWeek.setDate(today.getDate() - today.getDay());
-        startOfWeek.setHours(0, 0, 0, 0);
-
-        const endOfWeek = new Date(startOfWeek);
-        endOfWeek.setDate(startOfWeek.getDate() + 6);
-        endOfWeek.setHours(23, 59, 59, 999);
-
-        startAt.setTime(startOfWeek.getTime());
-        endAt.setTime(endOfWeek.getTime());
-        break;
-      }
-
-      case ReportInterval.MONTHLY: {
-        const today = new Date();
-
-        const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-        startOfMonth.setHours(0, 0, 0, 0);
-
-        const endOfMonth = new Date(
-          today.getFullYear(),
-          today.getMonth() + 1,
-          0,
-        );
-        endOfMonth.setHours(23, 59, 59, 999);
-
-        startAt.setTime(startOfMonth.getTime());
-        endAt.setTime(endOfMonth.getTime());
-        break;
-      }
-    }
-
-    startAt.setHours(0, 0, 0, 0);
+    const { startAt, endAt } = this.getInterval(reportSendInterval);
 
     const claims = await this.claimRepository.listByOrganization(
       organizationId,
       startAt,
+      endAt,
     );
 
     await this.mailService.sendExchangeOrdersToAdmin(
@@ -91,5 +53,78 @@ export class NotifyExchangesUseCase {
         };
       }),
     );
+  }
+
+  private getInterval(reportSendInterval: ReportInterval) {
+    const today = new Date();
+
+    let startAt: Date;
+    let endAt: Date;
+
+    switch (reportSendInterval) {
+      case ReportInterval.DAILY: {
+        startAt = this.getStartOfDay(today);
+        endAt = this.getEndOfDay(today);
+        break;
+      }
+
+      case ReportInterval.WEEKLY: {
+        const startOfWeek = this.getStartOfWeek(today);
+        startAt = startOfWeek;
+        endAt = this.getEndOfWeek(startOfWeek);
+        break;
+      }
+
+      case ReportInterval.MONTHLY: {
+        startAt = this.getStartOfMonth(today);
+        endAt = this.getEndOfMonth(today);
+        break;
+      }
+
+      default: {
+        startAt = this.getStartOfDay(today);
+        endAt = this.getEndOfDay(today);
+      }
+    }
+
+    return { startAt, endAt };
+  }
+
+  private getStartOfDay(date: Date): Date {
+    const start = new Date(date);
+    start.setHours(0, 0, 0, 0);
+    return start;
+  }
+
+  private getEndOfDay(date: Date): Date {
+    const end = new Date(date);
+    end.setHours(23, 59, 59, 999);
+    return end;
+  }
+
+  private getStartOfWeek(date: Date): Date {
+    const start = new Date(date);
+    start.setDate(date.getDate() - date.getDay());
+    start.setHours(0, 0, 0, 0);
+    return start;
+  }
+
+  private getEndOfWeek(startOfWeek: Date): Date {
+    const end = new Date(startOfWeek);
+    end.setDate(startOfWeek.getDate() + 6);
+    end.setHours(23, 59, 59, 999);
+    return end;
+  }
+
+  private getStartOfMonth(date: Date): Date {
+    const start = new Date(date.getFullYear(), date.getMonth(), 1);
+    start.setHours(0, 0, 0, 0);
+    return start;
+  }
+
+  private getEndOfMonth(date: Date): Date {
+    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    end.setHours(23, 59, 59, 999);
+    return end;
   }
 }

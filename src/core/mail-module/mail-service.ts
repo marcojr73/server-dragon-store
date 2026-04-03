@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { subjects } from '@core/mail-module/subjects';
+import { formatters } from '@core/formatters/format-date';
 
 @Injectable()
 export class MailService {
@@ -14,11 +15,26 @@ export class MailService {
     });
   }
 
-  async sendWelcomeEmail(email: string, name: string) {
+  async sendWelcomeEmail(to: string, userName: string) {
+    const playStoreLink = process.env.PLAY_STORE_LINK;
+    const appStoreLink = process.env.APP_STORE_LINK;
+
     await this.mailerService.sendMail({
-      to: email,
-      subject: 'Bem-vindo!',
-      html: `<h1>Olá ${name}</h1><p>Bem-vindo ao nosso sistema!</p>`,
+      to,
+      subject: 'Bem-vindo a Dragon store',
+      template: 'welcome',
+      context: {
+        userName,
+        playStoreLink,
+        appStoreLink,
+      },
+      attachments: [
+        {
+          filename: 'logo.png',
+          path: 'assets/dragon.png',
+          cid: 'logo',
+        },
+      ],
     });
   }
 
@@ -60,12 +76,16 @@ export class MailService {
     productName: string,
     productImage: string | null,
   ) {
-    console.log(to);
     await this.mailerService.sendMail({
       to,
       subject: 'Notificação de resgate',
       template: 'user_claim',
-      context: { userName, productName, productImage, date: Date.now() },
+      context: {
+        userName,
+        productName,
+        productImage,
+        date: formatters.formatDateTime(new Date()),
+      },
       attachments: [
         {
           filename: 'logo.png',

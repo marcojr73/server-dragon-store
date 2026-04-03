@@ -133,7 +133,6 @@ export class UserController {
       createOrUpdateUserDto,
       session,
     );
-    await new Promise((resolve) => setTimeout(resolve, 2000));
     res.status(201).send({ id: user.id });
   }
 

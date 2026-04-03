@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Bem-vindo</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .header {
+      background: #000;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 10px auto;
+    }
+
+    .header h1 {
+      color: #ffffff;
+      margin: 0;
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .content {
+      padding: 30px;
+    }
+
+    .greeting {
+      font-size: 16px;
+      color: #333333;
+      margin-bottom: 16px;
+    }
+
+    .intro-text {
+      font-size: 14px;
+      color: #666666;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .product-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 20px;
+      background-color: #fafafa;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .product-image {
+      width: 100%;
+      max-width: 250px;
+      height: 180px;
+      margin: 0 auto 16px auto;
+      border-radius: 8px;
+      background-color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-size: 14px;
+    }
+
+    .product-image img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+
+    .product-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 12px;
+    }
+
+    .store-links {
+      margin-top: 16px;
+    }
+
+    .store-links a {
+      display: inline-block;
+      margin: 8px;
+      padding: 12px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .playstore {
+      background-color: #16a34a;
+    }
+
+    .appstore {
+      background-color: #2563eb;
+    }
+
+    .alert {
+      background-color: #ecfeff;
+      border: 1px solid #67e8f9;
+      color: #155e75;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .alert strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+
+    .footer {
+      padding: 20px 30px;
+      text-align: center;
+      font-size: 12px;
+      color: #777777;
+      background-color: #f9fafb;
+    }
+
+    @media only screen and (max-width: 600px) {
+      .content {
+        padding: 20px;
+      }
+
+      .product-image {
+        height: 150px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <img src="cid:logo" alt="Logo">
+    <h1>Bem-vindo à Dragon Store</h1>
+  </div>
+
+  <div class="content">
+    <div class="greeting">
+      Olá, <strong>{{userName}}</strong>!
+    </div>
+
+    <div class="intro-text">
+      Sua conta foi criada com sucesso<br>
+      Para começar a aproveitar todos os benefícios, baixe agora o aplicativo da <strong>Dragon Store</strong> no seu
+      celular.
+    </div>
+
+    <div class="product-card">
+
+      <div class="product-name">Baixe o aplicativo</div>
+
+      <div class="intro-text">
+        Escolha sua loja e faça o download:
+      </div>
+
+      <div class="store-links">
+        <a href="{{playStoreLink}}" class="playstore" target="_blank">Google Play Store</a>
+        <a href="{{appStoreLink}}" class="appstore" target="_blank">Apple App Store</a>
+      </div>
+
+    </div>
+
+    <div class="alert">
+      <strong>Dica</strong>
+      Após instalar o aplicativo, faça login com seu e-mail corporativo e comece a trocar moedas.
+      Em caso de dúvidas, procure o setor de <strong>Recursos Humanos (RH)</strong>
+    </div>
+
+    <div class="intro-text">
+      Este é um e-mail automático de boas-vindas. Caso você não reconheça este cadastro, entre em contato com o RH.
+    </div>
+
+  </div>
+
+  <div class="footer">
+    © 2025 Dragon Store.
+  </div>
+
+</div>
+</body>
+</html>

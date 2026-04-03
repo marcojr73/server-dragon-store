@@ -9,6 +9,9 @@ import { UserRepository } from '../../user-module/user-repository';
 import { ProductsRepository } from '../../products-module/products-repository';
 import { PrismaService } from '@core/prisma-module/prisma-service';
 import { MailService } from '@core/mail-module/mail-service';
+import { OrganizationRepository } from '../../organization-module/organization-repository';
+import { ReportInterval } from '@core/enums/resport-interval';
+import { formatters } from '@core/formatters/format-date';
 
 @Injectable()
 export class ClaimUseCase {
@@ -16,6 +19,7 @@ export class ClaimUseCase {
     private readonly repository: ClaimRepository,
     private readonly userRepository: UserRepository,
     private readonly productsRepository: ProductsRepository,
+    private readonly organizationRepository: OrganizationRepository,
     private readonly prisma: PrismaService,
     private readonly mailService: MailService,
   ) {}
@@ -28,8 +32,11 @@ export class ClaimUseCase {
     if (!user) {
       throw new UnauthorizedException();
     }
+    const organization = await this.organizationRepository.findFirst({
+      id: user.organizationId,
+    });
     const product = await this.productsRepository.getProductById(productId);
-    if (!product) {
+    if (!product || !organization) {
       throw new NotFoundException();
     }
     if (product.store.id !== user.organizationId) {
@@ -45,12 +52,31 @@ export class ClaimUseCase {
       );
       await this.repository.create(productId, userId);
     });
+    const reportSendInterval: ReportInterval = organization.reportSendInterval;
     await this.mailService.sendClaimEmail(
       user.email,
       user.userName,
       product.name,
       product.picture,
     );
+    if (
+      reportSendInterval === ReportInterval.ON_EACH_CLAIM &&
+      organization.responsibleEmail
+    ) {
+      await this.mailService.sendExchangeOrdersToAdmin(
+        organization.responsibleEmail,
+        organization.responsibleName ?? 'Administrador',
+        'Ultimo resgate',
+        formatters.formatDateTime(new Date()),
+        [
+          {
+            userName: user.userName,
+            productName: product.name,
+            date: formatters.formatDateTime(new Date()),
+          },
+        ],
+      );
+    }
     return response;
   }
 }

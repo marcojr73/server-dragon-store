@@ -18,15 +18,20 @@ export class ClaimRepository {
     });
   }
 
-  listByOrganization(organizationId: number, startAt?: Date) {
+  listByOrganization(organizationId: number, startAt?: Date, endAt?: Date) {
     return this.repository.findMany({
       where: {
         user: {
           organizationId,
         },
-        createdAt: {
-          gt: startAt,
-        },
+        ...(startAt || endAt
+          ? {
+              createdAt: {
+                ...(startAt && { gte: startAt }),
+                ...(endAt && { lte: endAt }),
+              },
+            }
+          : {}),
       },
       select: {
         product: true,
